@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const MONGO_URI = 'mongodb://alishbaawan890_db_user:dAacu6ayCzWMQkSL@ac-ikmadxj-shard-00-00.bmfkw2x.mongodb.net:27017,ac-ikmadxj-shard-00-01.bmfkw2x.mongodb.net:27017,ac-ikmadxj-shard-00-02.bmfkw2x.mongodb.net:27017/myshop?ssl=true&replicaSet=atlas-j192wk-shard-0&authSource=admin&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://alishbaawan890_db_user:dAacu6ayCzWMQkSL@ac-ikmadxj-shard-00-00.bmfkw2x.mongodb.net:27017,ac-ikmadxj-shard-00-01.bmfkw2x.mongodb.net:27017,ac-ikmadxj-shard-00-02.bmfkw2x.mongodb.net:27017/myshop?ssl=true&replicaSet=atlas-j192wk-shard-0&authSource=admin&appName=Cluster0';
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB Connected!'))
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
