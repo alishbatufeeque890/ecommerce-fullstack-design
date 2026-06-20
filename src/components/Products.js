@@ -1,74 +1,156 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function Products() {
-  const products = [
-    { 
-      id: 1, 
-      name: 'Sneakers', 
-      price: '$45', 
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300' 
-    },
-    { 
-      id: 2, 
-      name: 'Backpack', 
-      price: '$60', 
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300' 
-    },
-    { 
-      id: 3, 
-      name: 'Watch', 
-      price: '$120', 
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300' 
-    },
-    { 
-      id: 4, 
-      name: 'Sunglasses', 
-      price: '$30', 
-      image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300' 
+function Products({ addToCart, user, setCurrentPage }) {
+  const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [addedId, setAddedId] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/products')
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.log('Error fetching products:', error);
+      });
+  }, []);
+
+  const categories = ['All', ...new Set(products.map(p => p.category))];
+
+  const filteredProducts = products.filter(function(product) {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const handleAddToCart = (product) => {
+    if (!user) {
+      alert('Please login first to add items to cart!');
+      setCurrentPage('login');
+      return;
     }
-  ];
+    addToCart(product);
+    setAddedId(product._id);
+    setTimeout(() => setAddedId(null), 1500);
+  };
 
   return (
-    <div style={{ padding: '40px' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>
-        Our Products
+    <div style={{ padding: '50px 40px', fontFamily: "'Poppins', sans-serif" }}>
+      <h2 style={{ 
+        textAlign: 'center', 
+        marginBottom: '10px',
+        fontFamily: "'Playfair Display', serif",
+        fontSize: '36px',
+        color: '#6a1b6e'
+      }}>
+        Our Collection
       </h2>
+      <p style={{ textAlign: 'center', color: '#999', marginBottom: '30px' }}>
+        Handpicked pieces just for you
+      </p>
+
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            padding: '14px 24px',
+            width: '320px',
+            border: '2px solid #f3d4e3',
+            borderRadius: '30px',
+            fontSize: '15px',
+            outline: 'none',
+            fontFamily: "'Poppins', sans-serif"
+          }}
+        />
+      </div>
+
+      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+        {categories.map(function(cat) {
+          return (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              style={{
+                margin: '0 6px 10px',
+                padding: '8px 20px',
+                borderRadius: '20px',
+                border: '2px solid #c2185b',
+                backgroundColor: selectedCategory === cat ? '#c2185b' : 'white',
+                color: selectedCategory === cat ? 'white' : '#c2185b',
+                cursor: 'pointer',
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: '500',
+                fontSize: '14px',
+                transition: 'all 0.2s'
+              }}
+            >
+              {cat}
+            </button>
+          );
+        })}
+      </div>
+
       <div style={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '20px',
+        gap: '24px',
         justifyContent: 'center'
       }}>
-        {products.map(function(product) {
-          return (
-            <div key={product.id} style={{
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              padding: '20px',
-              width: '200px',
-              textAlign: 'center'
-            }}>
-              <img 
-                src={product.image} 
-                alt={product.name}
-                style={{ width: '100%', height: '150px', objectFit: 'cover', marginBottom: '10px', borderRadius: '5px' }}
-              />
-              <h3>{product.name}</h3>
-              <p style={{ color: '#666', fontSize: '18px', fontWeight: 'bold' }}>{product.price}</p>
-              <button style={{
-                padding: '10px 20px',
-                backgroundColor: '#333',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                width: '100%'
+        {filteredProducts.length === 0 ? (
+          <p style={{ color: '#999' }}>No products found!</p>
+        ) : (
+          filteredProducts.map(function(product) {
+            return (
+              <div key={product._id} style={{
+                border: '1px solid #f3e0e9',
+                borderRadius: '16px',
+                padding: '20px',
+                width: '220px',
+                textAlign: 'center',
+                backgroundColor: 'white',
+                boxShadow: '0 4px 15px rgba(142, 68, 173, 0.08)'
               }}>
-                Add to Cart
-              </button>
-            </div>
-          );
-        })}
+                <img 
+                  src={product.image} 
+                  alt={product.name}
+                  style={{ width: '100%', height: '160px', objectFit: 'cover', marginBottom: '14px', borderRadius: '10px' }}
+                />
+                <span style={{
+                  fontSize: '11px',
+                  color: '#c2185b',
+                  backgroundColor: '#fce4ec',
+                  padding: '3px 10px',
+                  borderRadius: '10px'
+                }}>
+                  {product.category}
+                </span>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", color: '#4a1a4f', margin: '8px 0' }}>{product.name}</h3>
+                <p style={{ color: '#c2185b', fontSize: '18px', fontWeight: '600', margin: '6px 0 16px' }}>${product.price}</p>
+                <button 
+                  onClick={() => handleAddToCart(product)}
+                  style={{
+                    padding: '10px 20px',
+                    background: addedId === product._id ? '#4caf50' : 'linear-gradient(135deg, #8e44ad, #c2185b)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '20px',
+                    cursor: 'pointer',
+                    width: '100%',
+                    fontFamily: "'Poppins', sans-serif",
+                    fontWeight: '500',
+                    transition: 'background 0.3s'
+                  }}>
+                  {addedId === product._id ? '✓ Added!' : 'Add to Cart'}
+                </button>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

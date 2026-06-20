@@ -1,27 +1,39 @@
 import React from 'react';
 
-function Hero() {
+function Hero({ setCurrentPage }) {
   return (
     <div style={{
       textAlign: 'center',
-      padding: '80px 20px',
-      backgroundColor: '#f4f4f4'
+      padding: '90px 20px',
+      background: 'linear-gradient(135deg, #fce4ec, #f3e5f5)',
+      fontFamily: "'Poppins', sans-serif"
     }}>
-      <h1 style={{ fontSize: '48px', marginBottom: '20px' }}>
-        Welcome to My Shop 🛍️
-      </h1>
-      <p style={{ fontSize: '20px', color: '#666', marginBottom: '30px' }}>
-        Best products, best prices, best experience!
-      </p>
-      <button style={{
-        padding: '15px 40px',
-        fontSize: '18px',
-        backgroundColor: '#333',
-        color: 'white',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer'
+      <h1 style={{ 
+        fontSize: '52px', 
+        marginBottom: '20px',
+        fontFamily: "'Playfair Display', serif",
+        fontWeight: '700',
+        color: '#6a1b6e'
       }}>
+        Welcome to AlishStyle ✨
+      </h1>
+      <p style={{ fontSize: '20px', color: '#7a5980', marginBottom: '30px' }}>
+        Where every outfit tells your story
+      </p>
+      <button 
+        onClick={() => setCurrentPage('products')}
+        style={{
+          padding: '15px 40px',
+          fontSize: '18px',
+          background: 'linear-gradient(135deg, #8e44ad, #c2185b)',
+          color: 'white',
+          border: 'none',
+          borderRadius: '30px',
+          cursor: 'pointer',
+          fontFamily: "'Poppins', sans-serif",
+          fontWeight: '500',
+          boxShadow: '0 4px 15px rgba(142, 68, 173, 0.4)'
+        }}>
         Shop Now
       </button>
     </div>
