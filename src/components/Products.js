@@ -8,7 +8,7 @@ function Products({ addToCart, user, setCurrentPage }) {
   const [addedId, setAddedId] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/products')
+    axios.get('https://ecommerce-fullstack-design-7src.onrender.com/api/products')
       .then((response) => {
         setProducts(response.data);
       })
@@ -85,8 +85,7 @@ function Products({ addToCart, user, setCurrentPage }) {
                 cursor: 'pointer',
                 fontFamily: "'Poppins', sans-serif",
                 fontWeight: '500',
-                fontSize: '14px',
-                transition: 'all 0.2s'
+                fontSize: '14px'
               }}
             >
               {cat}
