@@ -12,7 +12,8 @@ function Navbar({ cartCount, setCurrentPage, user, setUser }) {
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center',
-      padding: '18px 40px',
+      flexWrap: 'wrap',
+      padding: '18px 20px',
       background: 'linear-gradient(135deg, #8e44ad, #c2185b)',
       color: 'white',
       boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
@@ -31,27 +32,33 @@ function Navbar({ cartCount, setCurrentPage, user, setUser }) {
           margin: 0, 
           fontFamily: "'Playfair Display', serif",
           fontWeight: '700',
-          fontSize: '26px',
+          fontSize: '22px',
           letterSpacing: '0.5px'
         }}>
           AlishStyle <span style={{ color: '#ffd700' }}>✦</span>
         </h2>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', fontFamily: "'Poppins', sans-serif" }}>
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        fontFamily: "'Poppins', sans-serif",
+        flexWrap: 'wrap',
+        gap: '5px'
+      }}>
         <span 
-          style={{ margin: '0 15px', cursor: 'pointer' }}
+          style={{ margin: '0 10px', cursor: 'pointer' }}
           onClick={() => setCurrentPage('home')}
         >
           Home
         </span>
         <span 
-          style={{ margin: '0 15px', cursor: 'pointer' }}
+          style={{ margin: '0 10px', cursor: 'pointer' }}
           onClick={() => setCurrentPage('products')}
         >
           Products
         </span>
         <span 
-          style={{ margin: '0 15px', cursor: 'pointer' }}
+          style={{ margin: '0 10px', cursor: 'pointer' }}
           onClick={() => setCurrentPage('cart')}
         >
           Cart 🛍️ ({cartCount})
@@ -59,7 +66,7 @@ function Navbar({ cartCount, setCurrentPage, user, setUser }) {
 
         {user?.isAdmin && (
           <span 
-            style={{ margin: '0 15px', cursor: 'pointer' }}
+            style={{ margin: '0 10px', cursor: 'pointer' }}
             onClick={() => setCurrentPage('admin')}
           >
             Admin Panel
@@ -68,10 +75,10 @@ function Navbar({ cartCount, setCurrentPage, user, setUser }) {
 
         {user ? (
           <>
-            <span style={{ margin: '0 15px' }}>Hi, {user.name}</span>
+            <span style={{ margin: '0 10px' }}>Hi, {user.name}</span>
             <span 
               style={{ 
-                margin: '0 15px', 
+                margin: '0 10px', 
                 cursor: 'pointer',
                 padding: '8px 16px',
                 backgroundColor: 'rgba(255,255,255,0.2)',
@@ -85,7 +92,7 @@ function Navbar({ cartCount, setCurrentPage, user, setUser }) {
         ) : (
           <span 
             style={{ 
-              margin: '0 15px', 
+              margin: '0 10px', 
               cursor: 'pointer',
               padding: '8px 16px',
               backgroundColor: 'rgba(255,255,255,0.2)',
