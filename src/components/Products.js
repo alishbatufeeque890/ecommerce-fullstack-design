@@ -6,14 +6,17 @@ function Products({ addToCart, user, setCurrentPage }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [addedId, setAddedId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get('https://ecommerce-fullstack-design-7src.onrender.com/api/products')
       .then((response) => {
         setProducts(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log('Error fetching products:', error);
+        setLoading(false);
       });
   }, []);
 
@@ -35,6 +38,31 @@ function Products({ addToCart, user, setCurrentPage }) {
     setAddedId(product._id);
     setTimeout(() => setAddedId(null), 1500);
   };
+
+  if (loading) {
+    return (
+      <div style={{ 
+        textAlign: 'center', 
+        padding: '80px 20px',
+        fontFamily: "'Poppins', sans-serif"
+      }}>
+        <div style={{
+          fontSize: '40px',
+          marginBottom: '20px'
+        }}>✨</div>
+        <p style={{ 
+          color: '#8e44ad', 
+          fontSize: '18px',
+          fontWeight: '500'
+        }}>
+          Loading products...
+        </p>
+        <p style={{ color: '#999', fontSize: '14px' }}>
+          Please wait a moment 🌸
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: '30px 15px', fontFamily: "'Poppins', sans-serif" }}>
